@@ -1,8 +1,11 @@
 package Controler;
 
+import Auxiliar.Desenho;
 import Modelo.*;
 
 import java.util.ArrayList;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class Fases {
 
@@ -11,8 +14,10 @@ public class Fases {
 
     public static void proximaFase(){
         faseCounter++;
-        if (faseCounter == 5) faseCounter = 1;
-        bg = "bg" + faseCounter + ".png";
+        if (faseCounter == 5) {
+            telaFinal();
+        }
+        else bg = "bg" + faseCounter + ".png";
     }
 
     public static ArrayList<Personagem> listaTeste(){
@@ -113,5 +118,52 @@ public class Fases {
     public void telaInicial(){
         bg = "telaMenu.png";
     }
+    public static ArrayList<Personagem> segundaFase(){
+        ArrayList<Personagem> fase = new ArrayList<>();
 
+        Skoot skoot = new Skoot("skoot_atualizado.png");
+        skoot.setPosicao(0, 7);
+        fase.add(skoot);
+
+        return fase;
+    }
+
+    public static ArrayList<Personagem> terceiraFase(){
+        ArrayList<Personagem> fase = new ArrayList<>();
+
+        Skoot skoot = new Skoot("skoot_atualizado.png");
+        skoot.setPosicao(0, 7);
+        fase.add(skoot);
+
+        return fase;
+    }
+
+    public static ArrayList<Personagem> quartaFase(){
+        ArrayList<Personagem> fase = new ArrayList<>();
+
+        Skoot skoot = new Skoot("skoot_atualizado.png");
+        skoot.setPosicao(0, 7);
+        fase.add(skoot);
+
+        return fase;
+    }
+
+    public static ArrayList<Personagem> quintaFase(){
+        ArrayList<Personagem> fase = new ArrayList<>();
+
+        Skoot skoot = new Skoot("skoot_atualizado.png");
+        skoot.setPosicao(0, 7);
+        fase.add(skoot);
+
+        return fase;
+    }
+
+    public static void telaFinal(){
+        bg = "telaFinal.png";
+        Desenho.acessoATelaDoJogo().faseAtual.clear();
+        Desenho.acessoATelaDoJogo().musicClose();
+        Desenho.acessoATelaDoJogo().music("parabains.wav");
+        Desenho.acessoATelaDoJogo().gameOver();
+
+    }
 }

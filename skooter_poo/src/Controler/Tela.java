@@ -39,7 +39,8 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 Consts.RES * Consts.CELL_SIDE + getInsets().top + getInsets().bottom);
 
         faseAtual = new ArrayList<Personagem>();
-        music();
+        String soundtrack = "soundtrack.wav";
+        music(soundtrack);
     }
 
     public boolean ehPosicaoValida(Posicao p){
@@ -63,7 +64,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
         /*Desenha cenário de fundo in-game*/
-        if (Fases.faseCounter == 0){
+        if (Fases.faseCounter == 0 || Fases.faseCounter == 5){
             try {
                 /*Desenha a tela de menu*/
                 Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + Fases.bg);
@@ -163,25 +164,33 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         //repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
     }
 
-    public void music(){
+    public void music(String soundtrack){
         if (musica == null){
             try {
                 String currentPath = new java.io.File(".").getCanonicalPath();
-                String soundtrackPath = currentPath + Consts.PATH_SOUND + "soundtrack.wav";
+                String soundtrackPath = currentPath + Consts.PATH_SOUND + soundtrack;
                 musica = new Music(soundtrackPath);
             } catch (Exception e) {
                 System.out.println(e.getMessage());
             }
         }
     };
+    public void musicClose(){
+        if (musica != null){
+            musica.pause();
+            musica = null;
+        }
+    }
     public void proximaFase() {
         if (skoot != null){
             skoot.setPosicao(0, 7);
         }
         Fases.proximaFase();
         faseAtual.clear();
-        faseAtual.addAll(Fases.primeiraFase());
-        skoot = (Skoot) faseAtual.get(faseAtual.size()-1);
+        if (Fases.faseCounter != 5){
+            faseAtual.addAll(Fases.primeiraFase());
+            skoot = (Skoot) faseAtual.get(faseAtual.size() - 1);
+        }
     }
 
     public void saveGame(){
@@ -277,8 +286,17 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     public void keyTyped(KeyEvent e) {
     }
 
+    static class Finaliza extends TimerTask {
+        @Override
+        public void run() {
+            Timer timer = new Timer();
+            System.exit(0);
+        }
+    }
 
     public void gameOver() {
-
+        Timer timer = new Timer();
+        timer.schedule(new Finaliza(), 7000);
     }
+
 }
