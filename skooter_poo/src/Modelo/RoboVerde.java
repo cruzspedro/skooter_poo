@@ -2,16 +2,17 @@ package Modelo;
 
 import java.util.Random;
 
-public class RoboVerde extends Personagem{
-    private int timer = 0;
+public class RoboVerde extends Personagem {
+    private int timer = -50;
+
     public RoboVerde(String sNomeImagePNG) {
         super(sNomeImagePNG);
         this.bMortal = true;
         this.bTransponivel = true;
     }
 
-    public void autoDesenho(){
-        if (timer == 10){
+    public void autoDesenho() {
+        if (timer == 10) {
             Random rand = new Random();
             int iDirecao = rand.nextInt(4);
 

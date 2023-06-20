@@ -1,14 +1,13 @@
 package Controler;
 
-import Auxiliar.*;
-import Modelo.Personagem;
-import Modelo.Skoot;
 import Auxiliar.Consts;
 import Auxiliar.Desenho;
+import Auxiliar.Music;
+import Modelo.Personagem;
+import Modelo.Skoot;
 import auxiliar.Posicao;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.Toolkit;
+
+import java.awt.*;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -41,11 +40,13 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         faseAtual = new ArrayList<Personagem>();
         String soundtrack = "soundtrack.wav";
         music(soundtrack);
+        this.setTitle("Skoot - João Cano e Pedro Cruz");
     }
 
-    public boolean ehPosicaoValida(Posicao p){
+    public boolean ehPosicaoValida(Posicao p) {
         return cj.ehPosicaoValida(this.faseAtual, p);
     }
+
     public void addPersonagem(Personagem umPersonagem) {
         faseAtual.add(umPersonagem);
     }
@@ -54,9 +55,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         faseAtual.remove(umPersonagem);
     }
 
-    public Graphics getGraphicsBuffer(){
+    public Graphics getGraphicsBuffer() {
         return g2;
     }
+
     public void paint(Graphics gOld) {
 
         Graphics g = this.getBufferStrategy().getDrawGraphics();
@@ -64,7 +66,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         g2 = g.create(getInsets().left, getInsets().top, getWidth() - getInsets().right, getHeight() - getInsets().top);
 
         /*Desenha cenário de fundo in-game*/
-        if (Fases.faseCounter == 0 || Fases.faseCounter == 5){
+        if (Fases.faseCounter == 0 || Fases.faseCounter == 5) {
             try {
                 /*Desenha a tela de menu e as telas finais*/
                 Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + Fases.bg);
@@ -72,8 +74,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             } catch (IOException ex) {
                 Logger.getLogger(Tela.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
-        else {
+        } else {
             for (int i = 0; i < Consts.RES; i++) {
                 for (int j = 0; j < Consts.RES; j++) {
                     try {
@@ -111,20 +112,21 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void keyReleased(KeyEvent e) {
 
-            if (e.getKeyCode() == KeyEvent.VK_SPACE) {
-                skoot.bDestruidor = false;
-            } else if (e.getKeyCode() == KeyEvent.VK_UP) {
-                skoot.bDirecao = "Neutral";
-            } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
-                skoot.bDirecao = "Neutral";
-            } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
-                skoot.bDirecao = "Neutral";
-            } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
-                skoot.bDirecao = "Neutral";
-            }
+        if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+            skoot.bDestruidor = false;
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+            skoot.bDirecao = "Neutral";
+        } else if (e.getKeyCode() == KeyEvent.VK_DOWN) {
+            skoot.bDirecao = "Neutral";
+        } else if (e.getKeyCode() == KeyEvent.VK_LEFT) {
+            skoot.bDirecao = "Neutral";
+        } else if (e.getKeyCode() == KeyEvent.VK_RIGHT) {
+            skoot.bDirecao = "Neutral";
+        }
     }
 
     public void keyPressed(KeyEvent e) {
+
         if (e.getKeyCode() == KeyEvent.VK_C) {
             this.faseAtual.clear();
         } else if (e.getKeyCode() == KeyEvent.VK_UP) { //Movimentação do boneco
@@ -145,14 +147,13 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             skoot.moveRight();
         } else if (e.getKeyCode() == KeyEvent.VK_K) { //Tecla pra avançar p a próxima fase -- testes
             this.proximaFase();
-        }else if (e.getKeyCode() == KeyEvent.VK_S) { //Salva o jogo
+        } else if (e.getKeyCode() == KeyEvent.VK_S) { //Salva o jogo
             if (Fases.faseCounter != 0)
                 this.saveGame();
-        }
-        else if (e.getKeyCode() == KeyEvent.VK_R) { //Salva o jogo
+        } else if (e.getKeyCode() == KeyEvent.VK_R) { //Salva o jogo
             if (Fases.faseCounter != 0)
                 Fases.reiniciaFase();
-        }else if (e.getKeyCode() == KeyEvent.VK_L) {//Load no jogo
+        } else if (e.getKeyCode() == KeyEvent.VK_L) {//Load no jogo
             if (Fases.faseCounter != 0)
                 this.loadGame();
         } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {//Botão iniciar (na tela principal) ou FireButton in-game
@@ -161,14 +162,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             } else skoot.bDestruidor = true;
         }
 
-
-        this.setTitle("-> Cell: " + (skoot.getPosicao().getColuna()) + ", "
-                + (skoot.getPosicao().getLinha()));
-
     }
 
-    public void music(String soundtrack){
-        if (musica == null){
+    public void music(String soundtrack) {
+        if (musica == null) {
             try {
                 String currentPath = new java.io.File(".").getCanonicalPath();
                 String soundtrackPath = currentPath + Consts.PATH_SOUND + soundtrack;
@@ -177,26 +174,34 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
                 System.out.println(e.getMessage());
             }
         }
-    };
-    public void musicClose(){
-        if (musica != null){
+    }
+
+    ;
+
+    public void musicClose() {
+        if (musica != null) {
             musica.pause();
             musica = null;
         }
     }
+
     public void proximaFase() {
-        if (skoot != null){
+        //reseta o skoot
+        if (skoot != null) {
             skoot.setPosicao(0, 7);
+            skoot.vidas = 3;
+            skoot.itens = 0;
         }
+        //Chama a próxima fase
         Fases.proximaFase();
         faseAtual.clear();
-        if (Fases.faseCounter != 5){
+        if (Fases.faseCounter != 5) {
             faseAtual.addAll(Fases.primeiraFase());
             skoot = (Skoot) faseAtual.get(faseAtual.size() - 1);
         }
     }
 
-    public void saveGame(){
+    public void saveGame() { //Salva o jogo (salva a fase e quantidade de vidas)
         try {
             String currentPath = new java.io.File(".").getCanonicalPath();
             String savePath = currentPath + File.separator + "src" + File.separator + "Save.txt";
@@ -211,7 +216,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     }
 
-    public void loadGame(){
+    public void loadGame() { //Carrega o jogo (vai pra fase em que foi salvo com a quantidade de vidas salvas)
         try {
             String currentPath = new java.io.File(".").getCanonicalPath();
             String savePath = currentPath + File.separator + "src" + File.separator + "Save.txt";
@@ -230,16 +235,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
     public void mousePressed(MouseEvent e) {
-        /* Clique do mouse desligado*/
-         int x = e.getX();
-         int y = e.getY();
-     
-         this.setTitle("X: "+ x + ", Y: " + y +
-         " -> Cell: " + (y/Consts.CELL_SIDE) + ", " + (x/Consts.CELL_SIDE));
-        
-         //this.skoot.getPosicao().setPosicao(y/Consts.CELL_SIDE, x/Consts.CELL_SIDE);
-         
-        //repaint();
+
     }
 
 
@@ -255,12 +251,12 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 561, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 561, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 500, Short.MAX_VALUE)
+                layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                        .addGap(0, 500, Short.MAX_VALUE)
         );
 
         pack();
@@ -299,11 +295,10 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
 
     public void gameOver() {
 
-        if (skoot.vidas > 0){
+        if (skoot.vidas > 0) {
             Timer timer = new Timer();
             timer.schedule(new Finaliza(), 7400);
-        }
-        else {
+        } else {
             Timer timer = new Timer();
             timer.schedule(new Finaliza(), 3000);
         }
