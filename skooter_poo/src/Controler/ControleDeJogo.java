@@ -24,9 +24,15 @@ public class ControleDeJogo {
             //Mesma posicao
             if(skoot.getPosicao().igual(pIesimoPersonagem.getPosicao())) {
 
-                //Morte dos bichinhos
-                if (pIesimoPersonagem.isbMortal())
-                    umaFase.remove(pIesimoPersonagem);
+                //Morte do Skoot
+                if (pIesimoPersonagem.isbMortal()){
+                    skoot.vidas--;
+                    if (skoot.vidas == 0){
+                        Fases.faseCounter = 4;
+                        Desenho.acessoATelaDoJogo().proximaFase();
+                    }
+                    Fases.reiniciaFase();
+                }
 
                 //Movimento da seta
                 if (pIesimoPersonagem.isbTransponivel())

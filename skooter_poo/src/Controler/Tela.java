@@ -66,7 +66,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         /*Desenha cenário de fundo in-game*/
         if (Fases.faseCounter == 0 || Fases.faseCounter == 5){
             try {
-                /*Desenha a tela de menu*/
+                /*Desenha a tela de menu e as telas finais*/
                 Image newImage = Toolkit.getDefaultToolkit().getImage(new java.io.File(".").getCanonicalPath() + Consts.PATH + Fases.bg);
                 g2.drawImage(newImage, 0, 0, null);
             } catch (IOException ex) {
@@ -127,7 +127,7 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     public void keyPressed(KeyEvent e) {
         if (e.getKeyCode() == KeyEvent.VK_C) {
             this.faseAtual.clear();
-        } else if (e.getKeyCode() == KeyEvent.VK_UP) {
+        } else if (e.getKeyCode() == KeyEvent.VK_UP) { //Movimentação do boneco
             skoot.bDirecao = "Up";
             skoot.atualizaImagem("skoot_atualiizado_U.png");
             skoot.moveUp();
@@ -143,15 +143,19 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
             skoot.bDirecao = "Right";
             skoot.atualizaImagem("skoot_atualizado_R.png");
             skoot.moveRight();
-        } else if (e.getKeyCode() == KeyEvent.VK_K) {
+        } else if (e.getKeyCode() == KeyEvent.VK_K) { //Tecla pra avançar p a próxima fase -- testes
             this.proximaFase();
-        }else if (e.getKeyCode() == KeyEvent.VK_S) {
+        }else if (e.getKeyCode() == KeyEvent.VK_S) { //Salva o jogo
             if (Fases.faseCounter != 0)
                 this.saveGame();
-        }else if (e.getKeyCode() == KeyEvent.VK_L) {
+        }
+        else if (e.getKeyCode() == KeyEvent.VK_R) { //Salva o jogo
+            if (Fases.faseCounter != 0)
+                Fases.reiniciaFase();
+        }else if (e.getKeyCode() == KeyEvent.VK_L) {//Load no jogo
             if (Fases.faseCounter != 0)
                 this.loadGame();
-        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {
+        } else if (e.getKeyCode() == KeyEvent.VK_SPACE) {//Botão iniciar (na tela principal) ou FireButton in-game
             if (Fases.faseCounter == 0) {
                 this.proximaFase();
             } else skoot.bDestruidor = true;
@@ -161,7 +165,6 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
         this.setTitle("-> Cell: " + (skoot.getPosicao().getColuna()) + ", "
                 + (skoot.getPosicao().getLinha()));
 
-        //repaint(); /*invoca o paint imediatamente, sem aguardar o refresh*/
     }
 
     public void music(String soundtrack){
@@ -295,8 +298,16 @@ public class Tela extends javax.swing.JFrame implements MouseListener, KeyListen
     }
 
     public void gameOver() {
-        Timer timer = new Timer();
-        timer.schedule(new Finaliza(), 7000);
+
+        if (skoot.vidas > 0){
+            Timer timer = new Timer();
+            timer.schedule(new Finaliza(), 7400);
+        }
+        else {
+            Timer timer = new Timer();
+            timer.schedule(new Finaliza(), 3000);
+        }
     }
+
 
 }
